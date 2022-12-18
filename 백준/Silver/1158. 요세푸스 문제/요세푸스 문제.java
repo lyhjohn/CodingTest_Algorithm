@@ -1,52 +1,31 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer token = new StringTokenizer(br.readLine());
+        String[] inputs = br.readLine().split(" ");
+        int M = Integer.parseInt(inputs[0]);
+        int N = Integer.parseInt(inputs[1]);
+        List<Integer> nums = new ArrayList<>();
+        StringBuilder sb = new StringBuilder("<");
 
-		int N = Integer.parseInt(token.nextToken());
-		int K = Integer.parseInt(token.nextToken());
-		int count = 0;
-		StringBuilder sb = new StringBuilder();
-		sb.append("<");
+        for(int i = 1 ; i <= M ; ++i)
+            nums.add(i);
 
-		Queue<Integer> queue = new LinkedList<>();
-		int index = 0;
+        int target = 0;
+        N--;
 
-		for (int i = 1; i <= N; i++) {
-			queue.add(i);
-		}
+        while(!nums.isEmpty()) {
+            target = (target + N) % nums.size();
+            sb.append(nums.remove(target)).append(", ");
+        }
 
-		while (!queue.isEmpty()) {
-			Integer poll = queue.poll();
-			count++;
-			if (count == K) {
-				sb.append(poll).append(", ");
-				count = 0;
-			} else {
-				queue.add(poll);
-			}
-		}
-
-		sb.replace(sb.length() - 2, sb.length(), "");
-		sb.append(">");
-		bw.write(sb.toString());
-		bw.flush();
-		bw.close();
-		br.close();
-	}
+        sb.replace(sb.length() - 2, sb.length(), ">");
+        System.out.println(sb.toString());
+    }
 }
