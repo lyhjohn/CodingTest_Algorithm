@@ -1,0 +1,26 @@
+-- 코드를 입력하세요
+
+SELECT P.MEMBER_NAME, R2.REVIEW_TEXT, R2.REVIEW_DATE
+FROM MEMBER_PROFILE AS P
+INNER JOIN (
+    -- 랭킹 1위에 해당하는 리뷰 정보 SELECT
+    SELECT MEMBER_ID, REVIEW_TEXT, DATE_FORMAT(REVIEW_DATE, '%Y-%m-%d') AS REVIEW_DATE
+    FROM REST_REVIEW  AS R1
+    WHERE R1.MEMBER_ID =
+    (
+        -- 그룹 간 비교 정렬해서 랭킹 가져옴
+        SELECT MEMBER_ID
+        FROM 
+        (
+            -- GROUP BY 전에 정렬된 상태로 묶기 위해 전체 정렬
+            SELECT *
+            FROM REST_REVIEW
+            ORDER BY REVIEW_DATE, REVIEW_TEXT
+        ) AS R
+        GROUP BY MEMBER_ID 
+        ORDER BY COUNT(*) DESC, REVIEW_DATE, REVIEW_TEXT
+        LIMIT 1
+    )
+) AS R2
+ON P.MEMBER_ID = R2.MEMBER_ID
+ORDER BY R2.REVIEW_DATE, R2.REVIEW_TEXT
