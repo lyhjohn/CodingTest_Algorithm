@@ -11,67 +11,32 @@ public class Main {
 		int N = Integer.parseInt(br.readLine());
 
 		List<Integer> list = new ArrayList<>();
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < N; i++) {
 			String cmd = br.readLine();
 
 			if (cmd.contains("push_back")) {
-				int num = Integer.parseInt(cmd.substring(10));
-				list.add(num);
+				list.add(Integer.parseInt(cmd.substring(10)));
 				continue;
+			} else if (cmd.contains("push_front")) {
+				list.add(0, Integer.parseInt(cmd.substring(11)));
+				continue;
+			} else if (cmd.equals("pop_front")) {
+				sb.append(list.isEmpty() ? -1 : list.remove(0));
+			} else if (cmd.equals("pop_back")) {
+				sb.append(list.isEmpty() ? -1 : list.remove(list.size() - 1));
+			} else if (cmd.equals("size")) {
+				sb.append(list.size());
+			} else if (cmd.equals("empty")) {
+				sb.append(list.isEmpty() ? 1 : 0);
+			} else if (cmd.equals("front")) {
+				sb.append(list.isEmpty() ? -1 : list.get(0));
+			} else if (cmd.equals("back")) {
+				sb.append(list.isEmpty() ? -1 : list.get(list.size() - 1));
 			}
 
-			if (cmd.contains("push_front")) {
-				int num = Integer.parseInt(cmd.substring(11));
-				list.add(0, num);
-				continue;
-			}
-
-			if (cmd.equals("pop_front")) {
-				if (list.isEmpty()) {
-					System.out.println(-1);
-					continue;
-				}
-				System.out.println(list.remove(0));
-				continue;
-			}
-
-			if (cmd.equals("pop_back")) {
-				if (list.isEmpty()) {
-					System.out.println(-1);
-					continue;
-				}
-				System.out.println(list.remove(list.size() - 1));
-				continue;
-			}
-
-			if (cmd.equals("size")) {
-				System.out.println(list.size());
-				continue;
-			}
-
-			if (cmd.equals("empty")) {
-				System.out.println(list.isEmpty() ? 1 : 0);
-				continue;
-			}
-
-			if (cmd.equals("front")) {
-				if (list.isEmpty()) {
-					System.out.println(-1);
-					continue;
-				}
-				System.out.println(list.get(0));
-				continue;
-			}
-
-			if (cmd.equals("back")) {
-				if (list.isEmpty()) {
-					System.out.println(-1);
-					continue;
-				}
-				System.out.println(list.get(list.size() - 1));
-			}
+			sb.append("\n");
 		}
-
-
+		System.out.println(sb.toString());
 	}
 }
