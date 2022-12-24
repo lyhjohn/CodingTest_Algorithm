@@ -26,18 +26,24 @@ public class Main {
 
 		for (int i = 0; i < str.length(); i++) {
 
-			if (arr[i].equals("*")) {
-				stack.push(stack.pop() * stack.pop());
-			} else if (arr[i].equals("/")) {
-				Double pop1 = stack.pop();
-				Double pop2 = stack.pop();
-				stack.push(pop2 / pop1);
-			} else if (arr[i].equals("+")) {
-				stack.push(stack.pop() + stack.pop());
-			} else if (arr[i].equals("-")) {
-				stack.push((stack.pop() - stack.pop()) * -1);
-			} else {
-				stack.push(map.get(arr[i]));
+			switch (arr[i]) {
+				case "*":
+					stack.push(stack.pop() * stack.pop());
+					break;
+				case "/":
+					Double pop1 = stack.pop();
+					Double pop2 = stack.pop();
+					stack.push(pop2 / pop1);
+					break;
+				case "+":
+					stack.push(stack.pop() + stack.pop());
+					break;
+				case "-":
+					stack.push((stack.pop() - stack.pop()) * -1);
+					break;
+				default:
+					stack.push(map.get(arr[i]));
+					break;
 			}
 		}
 
