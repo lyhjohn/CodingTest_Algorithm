@@ -1,32 +1,58 @@
-import java.util.*;
-class Solution {
-    public int[] solution(String today, String[] terms, String[] privacies) {
-        List<Integer> answer=new ArrayList<>();
-        
-        //오늘날짜의 일수
-        String[] t=today.split("\\.");
-        int todayCnt=Integer.parseInt(t[0])*12*28+Integer.parseInt(t[1])*28+Integer.parseInt(t[2]);
-        
-        Map<String, Integer> map=new HashMap<>();
-        for(String i:terms){
-            String [] a=i.split("\\s");
-            map.put(a[0], Integer.parseInt(a[1]));
-        }
-        for(int i=0;i<privacies.length;i++){
-            int year=Integer.parseInt(privacies[i].substring(0, 4));//년
-            int month=Integer.parseInt(privacies[i].substring(5, 7));//월
-            int day=Integer.parseInt(privacies[i].substring(8,10));//일
-            String level=privacies[i].substring(11, 12);//약관종류
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-            Integer lev=map.get(level); //HashMap에서 해당 약관종류의 유효기간을 가져오기
-            month+=lev;
+/**
+ * 개인정보 수집 유효기간 2023 카카오 공채문제 난이도 1
+ */
+public class Solution {
 
-            int temp=year*12*28+month*28+day-1;//유효기간 마지막 날짜
+	public int[] solution(String today, String[] terms, String[] privacies) {
+//		int[] answer = {};
 
-            if(todayCnt>temp){
-                answer.add(i+1)  ;
-            }
-        }
-        return answer.stream().mapToInt(i -> i).toArray();
-    }
+		List<Integer> answer=new ArrayList<>();
+
+		StringBuilder result = new StringBuilder();
+		String[] todayArr = today.split("\\.");
+		int todayYear = Integer.parseInt(todayArr[0]) * 12 * 28;
+		int todayMonth = Integer.parseInt(todayArr[1]) * 28;
+		int todayDay = Integer.parseInt(todayArr[2]);
+
+		int totalToday = todayYear + todayMonth + todayDay;
+
+		Map<String, Integer> termsMap = new HashMap<>();
+		for (String s : terms) {
+			termsMap.put(s.substring(0, 1), Integer.parseInt(s.substring(2)));
+		}
+
+		for (int i = 0; i < privacies.length; i++) {
+
+			String privacy = privacies[i];
+			String term = privacy.substring(privacy.length() - 1);
+			int period = termsMap.get(term); // 유효기간
+
+			String[] date = privacy.substring(0, 10).split("\\.");
+			int year = Integer.parseInt(date[0]) * 12 * 28;
+			int month = (Integer.parseInt(date[1]) + period) * 28;
+			int day = Integer.parseInt(date[2]) - 1;
+
+			int totalDay = year + month + day;
+
+			if (totalToday > totalDay) {
+//				result.append(i + 1);
+				answer.add(i + 1);
+			}
+		}
+
+//		answer = new int[result.length()];
+		return answer.stream().mapToInt(i -> i).toArray();
+
+//		for (int i = 0; i < answer.length; i++) {
+//			answer[i] = Integer.parseInt(String.valueOf(result.charAt(i)));
+//		}
+//		Arrays.sort(answer);
+//		return answer;
+	}
 }
